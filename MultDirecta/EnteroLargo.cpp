@@ -9,3 +9,12 @@ EnteroLargo::EnteroLargo(string num){
         numero.push_back(num[i]);
     }
 }
+
+void EnteroLargo::printEL(){
+    list<char>::iterator it = numero.begin();
+    while (it != numero.end()){
+        cout << (*it);
+        it++;
+    }
+    cout << endl;
+}

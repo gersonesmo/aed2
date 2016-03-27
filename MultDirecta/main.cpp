@@ -5,47 +5,38 @@
 using namespace std;
 
 EnteroLargo sumaP(EnteroLargo a, EnteroLargo b){
-    string aString = "";
-    string bString = "";
     list<char>::reverse_iterator it1 = a.getNum().rbegin();
     list<char>::reverse_iterator it2 = b.getNum().rbegin();
-    while (it1 != a.getNum().rend()){
-        aString = (*it1) + aString;
-        it1++;
-    }
-    while (it2 != b.getNum().rend()){
-        bString = (*it2) + bString;
-        it2++;
-    }
     string resultado = "";
     int acarreo = 0;
     int l;
     
-    if (aString.size() < bString.size()){
-        int nCeros = bString.size()-aString.size();
+    if (a.getNum().size() < b.getNum().size()){
+        int nCeros = b.getNum().size()-a.getNum().size();
         for (int i = 0; i < nCeros; i++) {
-            aString = '0'+aString;
+            a.getNum().push_front('0');
         }
     }
     else {
-        int nCeros = aString.size()-bString.size();
+        int nCeros = a.getNum().size()-b.getNum().size();
         for (int i = 0; i < nCeros; i++) {
-            bString = '0'+ bString;
+            b.getNum().push_front('0');
         }
     }
     
-    for (int i = aString.size()-1; i >= 0; i--) {
-        l = ((int)aString[i] - '0') + ((int)bString[i] - '0') + acarreo;
+    for (int i = a.getNum().size()-1; i >= 0; i--) {
+        l = ((int)(*it1) - '0') + ((int)(*it2) - '0') + acarreo;
         if (l > 9){
             acarreo = l / 10;
             l = l % 10;
         }
         else acarreo = 0;
         resultado = to_string(l) + resultado;
+        it1++;
+        it2++;
     }
     if (acarreo != 0)
         resultado = to_string(acarreo) + resultado;
-    cout << aString << " +  " << bString << " = " << resultado << endl;
     return EnteroLargo(resultado);
 }
 
@@ -65,7 +56,6 @@ EnteroLargo multP(int n, EnteroLargo largo){
         itV++;
     }
     resultado = to_string(acarreo) + resultado;
-    cout << n << " " << resultado << endl;
     return EnteroLargo(resultado);
 }
 
@@ -93,23 +83,9 @@ EnteroLargo multELDirecta(EnteroLargo n1, EnteroLargo n2){
 int main(void){
     int k1, k2;
     string num1, num2;
-    /*cout << "Introduce k1 donde la longitud sea 8^k1" << endl;
-    cin >> k1;
-    cout << "Introduce el primer entero" << endl;
-    cin >> num1;
-    cout << "Introduce k2 donde la longitud sea 8^k2" << endl;
-    cin >> k2;
-    cout << "Introduce el segundo entero" << endl;
-    cin >> num2;*/
-    //if (num1.size()==pow(8,k1) && num2.size()==pow(8,k2)){
-        EnteroLargo n1 = EnteroLargo("48636283");
-        EnteroLargo n2 = EnteroLargo("53457984");
-        EnteroLargo res = multELDirecta(n1, n2);
-        
-        //multP(2, n2);
-    //}
-    //else{
-    //    cout << "Una de las 2 longitudes no es correcta" << endl;
-    //}
+    EnteroLargo n1 = EnteroLargo("48636283");
+    EnteroLargo n2 = EnteroLargo("53457984");
+    EnteroLargo res = multELDirecta(n1, n2);
+    res.printEL();
 }
 

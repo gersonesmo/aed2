@@ -13,5 +13,7 @@ class EnteroLargo {
             return numero;
         }
         EnteroLargo(string num);
+        EnteroLargo(list<char> num);
+        void printEL();
 };
 #endif
