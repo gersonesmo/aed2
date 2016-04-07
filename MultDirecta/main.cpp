@@ -4,13 +4,7 @@
 #include <math.h>
 using namespace std;
 
-EnteroLargo sumaP(EnteroLargo a, EnteroLargo b){
-    list<char>::reverse_iterator it1 = a.getNum().rbegin();
-    list<char>::reverse_iterator it2 = b.getNum().rbegin();
-    string resultado = "";
-    int acarreo = 0;
-    int l;
-    
+void leftpad(EnteroLargo &a, EnteroLargo &b){
     if (a.getNum().size() < b.getNum().size()){
         int nCeros = b.getNum().size()-a.getNum().size();
         for (int i = 0; i < nCeros; i++) {
@@ -23,6 +17,16 @@ EnteroLargo sumaP(EnteroLargo a, EnteroLargo b){
             b.getNum().push_front('0');
         }
     }
+}
+
+EnteroLargo sumaP(EnteroLargo a, EnteroLargo b){
+    list<char>::reverse_iterator it1 = a.getNum().rbegin();
+    list<char>::reverse_iterator it2 = b.getNum().rbegin();
+    string resultado = "";
+    int acarreo = 0;
+    int l;
+    
+    leftpad(a,b);
     
     for (int i = a.getNum().size()-1; i >= 0; i--) {
         l = ((int)(*it1) - '0') + ((int)(*it2) - '0') + acarreo;
