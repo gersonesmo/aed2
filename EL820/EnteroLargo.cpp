@@ -48,6 +48,7 @@ void EnteroLargo::printEL(){
         cout << (*it);
         it++;
     }
+    cout << endl;
 }
 
 void EnteroLargo::leftpad(EnteroLargo &a, EnteroLargo &b){
@@ -214,9 +215,46 @@ EnteroLargo EnteroLargo::multELDirecta(EnteroLargo n1, EnteroLargo n2){
     return sum;
 }
 
+EnteroLargo EnteroLargo::multDyV (EnteroLargo n1, EnteroLargo n2){
+    if ((n1.getNum().size() == 1) && (n2.getNum().size() == 1)){
+        int u = (int)(*n1.getNum().rbegin())-'0';
+        return multP(u, n2);
+    }
+    else{
+        if (n1.getNum().size() < n2.getNum().size()){
+            int nCeros = n2.getNum().size()-n1.getNum().size();
+            for (int i = 0; i < nCeros; i++) {
+                n1.getNum().push_front('0');
+            }
+        }
+        else {
+            int nCeros = n1.getNum().size()-n2.getNum().size();
+            for (int i = 0; i < nCeros; i++) {
+                n2.getNum().push_front('0');
+            }
+        }
+        int s = n1.numero.size()/2;
+        auto medion1 = next(n1.getNum().begin(), s);
+        auto medion2 = next(n2.getNum().begin(), s);
+        list<char> izqn1(n1.getNum().begin(), medion1), dern1(medion1, n1.getNum().end());
+        list<char> izqn2(n2.getNum().begin(), medion2), dern2(medion2, n2.getNum().end());
+        EnteroLargo w = EnteroLargo(izqn1);
+        EnteroLargo x = EnteroLargo(dern1);
+        EnteroLargo y = EnteroLargo(izqn2);
+        EnteroLargo z = EnteroLargo(dern2);
+        
+        EnteroLargo m1 = multDyV(w,y);
+        EnteroLargo m2 = suma(multDyV(w,z),multDyV(x,y));
+        EnteroLargo m3 = multDyV(x,z);
+        m1.desp(2*s);
+        m2.desp(s);
+        return suma(m1,suma(m2,m3));
+    }
+}
+
 EnteroLargo EnteroLargo::karatsubaOfman (EnteroLargo n1, EnteroLargo n2){
     bool signoRes = (n1.signo == n2.signo); // el signo resultado es negativo si ambos son de signos distintos y positivo si no
-
+    leftpad(n1,n2);
     int s = n1.getNum().size()/2;
 
     if ((n1.numero.size() == 1) && (n2.numero.size() == 1)){
@@ -230,10 +268,10 @@ EnteroLargo EnteroLargo::karatsubaOfman (EnteroLargo n1, EnteroLargo n2){
         auto medion2 = next(n2.numero.begin(), n2.numero.size()/2);
         list<char> izqn1(n1.numero.begin(), medion1), dern1(medion1, n1.numero.end());
         list<char> izqn2(n2.numero.begin(), medion2), dern2(medion2, n2.numero.end());
-        EnteroLargo w = EnteroLargo(izqn1);
-        EnteroLargo x = EnteroLargo(dern1);
-        EnteroLargo y = EnteroLargo(izqn2);
-        EnteroLargo z = EnteroLargo(dern2);
+        EnteroLargo w = EnteroLargo(izqn1, n1.signo);
+        EnteroLargo x = EnteroLargo(dern1, n1.signo);
+        EnteroLargo y = EnteroLargo(izqn2, n2.signo);
+        EnteroLargo z = EnteroLargo(dern2, n2.signo);
 
         //r = u·v = 102S·w·y + 10S·[(w-x)·(z-y) + w·y + x·z] + x·z
         EnteroLargo m1 = karatsubaOfman(w,y);

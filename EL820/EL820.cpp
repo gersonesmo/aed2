@@ -16,14 +16,17 @@ EL820::EL820(EnteroLargo * eLargo, int cero1, int cero2, int n){
     this->n = n;
 }
 
-void EL820::printEL820(){
+EL820::EL820(int cero1, int cero2, string numero){
+    int n = numero.size()/8;
+    this->cero1 = cero1;
+    this->cero2 = cero2;
+    this->n = n;
     for (int i = 0; i < 8; i++) {
-        numero[i].printEL();
+        this->numero[i] = numero.substr(i*n, n);
     }
-    cout << endl;
 }
 
-EnteroLargo EL820::multDir (EL820 a, EL820 b){
+EnteroLargo EL820::multEL820 (EL820 a, EL820 b, int alg){
     EnteroLargo resultado = EnteroLargo("0");
     int d = 0; //desplazamiento
     for (int i = 7; i >= 0; i--) {
@@ -31,7 +34,7 @@ EnteroLargo EL820::multDir (EL820 a, EL820 b){
             d++;
         }
         else {
-            EnteroLargo mult = multPeq(a, b.numero[i]);
+            EnteroLargo mult = multPeq(a, b.numero[i], alg);
             mult.desp(d*a.n);
             resultado = EnteroLargo::suma(resultado,mult);
             d++;
@@ -40,7 +43,7 @@ EnteroLargo EL820::multDir (EL820 a, EL820 b){
     return resultado;
 }
 
-EnteroLargo EL820::multPeq(EL820 a, EnteroLargo b){
+EnteroLargo EL820::multPeq(EL820 a, EnteroLargo b, int alg){
     EnteroLargo resultado = EnteroLargo("0");
     int d = 0;
     for (int i = 7; i >= 0; i--) {
@@ -48,7 +51,18 @@ EnteroLargo EL820::multPeq(EL820 a, EnteroLargo b){
             d++;
         }
         else{
-            EnteroLargo mult = EnteroLargo::multELDirecta(a.numero[i],b);
+            EnteroLargo mult = EnteroLargo("0");
+            switch (alg){
+                case 1:
+                    mult = EnteroLargo::multELDirecta(a.numero[i],b);
+                    break;
+                case 2:
+                    mult = EnteroLargo::multDyV(a.numero[i],b);
+                    break;
+                case 3:
+                    mult = EnteroLargo::karatsubaOfman(a.numero[i],b);
+                    break;
+            }
             mult.desp(d*a.n);
             resultado = EnteroLargo::suma(resultado, mult);
             d++;

@@ -30,6 +30,7 @@ class EnteroLargo {
         void desp (int d);
         static EnteroLargo multP(int n, EnteroLargo largo);
         static EnteroLargo multELDirecta(EnteroLargo n1, EnteroLargo n2);
+        static EnteroLargo multDyV (EnteroLargo n1, EnteroLargo n2);
         static EnteroLargo karatsubaOfman(EnteroLargo n1, EnteroLargo n2);
 
         void printEL();
