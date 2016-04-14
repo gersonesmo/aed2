@@ -34,7 +34,7 @@ EnteroLargo EL820::multEL820 (EL820 a, EL820 b, int alg){
             d++;
         }
         else {
-            EnteroLargo mult = multPeq(a, b.numero[i], alg);
+            EnteroLargo mult = multPorCasos(a, b.numero[i], alg);
             mult.desp(d*a.n);
             resultado = EnteroLargo::suma(resultado,mult);
             d++;
@@ -43,7 +43,7 @@ EnteroLargo EL820::multEL820 (EL820 a, EL820 b, int alg){
     return resultado;
 }
 
-EnteroLargo EL820::multPeq(EL820 a, EnteroLargo b, int alg){
+EnteroLargo EL820::multPorCasos(EL820 a, EnteroLargo b, int alg){
     EnteroLargo resultado = EnteroLargo("0");
     int d = 0;
     for (int i = 7; i >= 0; i--) {

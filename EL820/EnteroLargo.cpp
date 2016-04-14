@@ -159,7 +159,7 @@ EnteroLargo EnteroLargo::suma(EnteroLargo a, EnteroLargo b){
         }
         int resta;
         while (itGrande!=endGrande && itPeq!=endPeq) {
-            if (*itGrande>=*itPeq){
+            if (*itGrande>=(*itPeq+acarreo)){
                 resta = (*itGrande -'0') - ((*itPeq - '0') + acarreo);
                 acarreo = 0;
             }
@@ -175,7 +175,7 @@ EnteroLargo EnteroLargo::suma(EnteroLargo a, EnteroLargo b){
 }
 
 
-EnteroLargo EnteroLargo::multP(int n, EnteroLargo largo){
+EnteroLargo EnteroLargo::multUnoPorTodo(int n, EnteroLargo largo){
     int acarreo = 0;
     string resultado = "";
     list<char>::reverse_iterator itV = largo.getNum().rbegin();
@@ -206,7 +206,7 @@ EnteroLargo EnteroLargo::multELDirecta(EnteroLargo n1, EnteroLargo n2){
     list<char>::reverse_iterator itU = n1.getNum().rbegin();
     while (itU!=n1.getNum().rend()){
             int u = (int)(*itU) - '0';
-            EnteroLargo sum2 = multP(u,n2);
+            EnteroLargo sum2 = multUnoPorTodo(u,n2);
             sum2.desp(i);
             sum = suma(sum, sum2);
             itU++;
@@ -218,7 +218,7 @@ EnteroLargo EnteroLargo::multELDirecta(EnteroLargo n1, EnteroLargo n2){
 EnteroLargo EnteroLargo::multDyV (EnteroLargo n1, EnteroLargo n2){
     if ((n1.getNum().size() == 1) && (n2.getNum().size() == 1)){
         int u = (int)(*n1.getNum().rbegin())-'0';
-        return multP(u, n2);
+        return multUnoPorTodo(u, n2);
     }
     else{
         if (n1.getNum().size() < n2.getNum().size()){

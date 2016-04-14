@@ -10,7 +10,7 @@ class EL820 {
     private:
         EnteroLargo numero[8];
         int cero1, cero2, n;
-        static EnteroLargo multPeq (EL820 a, EnteroLargo b, int alg);
+        static EnteroLargo multPorCasos (EL820 a, EnteroLargo b, int alg);
     public:
         EL820(EnteroLargo * eLargo, int cero1, int cero2, int n);
         EL820(int cero1, int cero2, string numero);

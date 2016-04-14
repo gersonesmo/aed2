@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <time.h>
 #include <iterator>
 
 using namespace std;
@@ -21,9 +22,15 @@ bool validar(EnteroLargo a, EnteroLargo b){
 
 string genera(int n){
     int randNum;
+    string generado = "";
     for (int i = 0; i < n; i++) {
-        randNum = rand()%(9-0 + 1);
+        randNum = rand() % 10;
+        while ((i==0) && randNum==0){
+            randNum = rand() % 10;    
+        }
+        generado = generado + to_string(randNum);
     }
+    return generado;
 }
 
 int main(void){
@@ -36,29 +43,35 @@ int main(void){
     
     
     while (!fin){
-        cin >> num1 >> num2;
-        cout <<"num1 = " << num1 << endl << "num2 = " << num2 << endl;
+        EnteroLargo::suma(EnteroLargo("0994"), EnteroLargo("5925", false)).printEL();
+        srand(time(NULL));
+        int pot;
+        cin >> pot;
+        //cin >> num1 >> num2;
+        //cout <<"num1 = " << num1 << endl << "num2 = " << num2 << endl;
+        num1 = genera(pot);
+        num2 = genera(pot);
         n1 = EnteroLargo(num1);
         n2 = EnteroLargo(num2);
         EL820 n3 = EL820(I,J,num1);
         EL820 n4 = EL820(K,L,num2);
         if (validar(n1,n2)){
             EnteroLargo res1 = EnteroLargo::multELDirecta(n1,n2);
-            cout << "Resultado con multiplicacion directa:" << endl;
+            //cout << "Resultado con multiplicacion directa: " << endl;
             res1.printEL();
             res1 = EnteroLargo::multDyV(n1,n2);
-            cout << "Resultado con algoritmo \"divide y vencerás\"" << endl;
+            //cout << "Resultado con algoritmo \"divide y vencerás\": " << endl;
             res1.printEL();
             res1 = EnteroLargo::karatsubaOfman(n1,n2);
-            cout << "Resultado con algoritmo de Karatsuba-Ofman" << endl;
+            //cout << "Resultado con algoritmo de Karatsuba-Ofman: " << endl;
             res1.printEL();
-            cout << "Resultado con EL820 directo: " << endl;
+            //cout << "Resultado con EL820 directo: " << endl;
             res1 = EL820::multEL820(n3,n4,1);
             res1.printEL();
-            cout << "Resultado con EL820 divide y venceras: " << endl;
+            //cout << "Resultado con EL820 \"divide y vencerás\": " << endl;
             res1 = EL820::multEL820(n3,n4,2);
             res1.printEL();
-            cout << "Resultado con EL820 Karatsuba-Ofman: " << endl;
+            //cout << "Resultado con EL820 Karatsuba-Ofman: " << endl;
             res1 = EL820::multEL820(n3,n4,3);
             res1.printEL();
             
@@ -70,7 +83,4 @@ int main(void){
         cin >> control;
         fin = control=='s' || control=='S';
     }
-    //EL820 n3 = EL820(a, I, J, 8);
-    //EL820 n4 = EL820(b, K, L, 8);
-    //EnteroLargo res2 = EL820::multDir(n3, n4);
 }
