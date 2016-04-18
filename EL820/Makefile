@@ -8,3 +8,8 @@ EnteroLargo.o: EnteroLargo.cpp EnteroLargo.h
 	g++ -std=c++11 -c EnteroLargo.cpp
 clean:
 	rm *.o *.out salida
+experimenta: experimenta.o EnteroLargo.o EL820.o
+	g++ -std=c++11 -o experimenta experimenta.o EnteroLargo.o EL820.o
+
+experimenta.o: experimenta.cpp
+	g++ -std=c++11 -c experimenta.cpp

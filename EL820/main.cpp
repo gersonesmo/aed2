@@ -26,7 +26,7 @@ string genera(int n){
     for (int i = 0; i < n; i++) {
         randNum = rand() % 10;
         while ((i==0) && randNum==0){
-            randNum = rand() % 10;    
+            randNum = rand() % 10;
         }
         generado = generado + to_string(randNum);
     }
@@ -37,13 +37,12 @@ int main(void){
     string num1, num2;
     bool fin;
     char control;
-    
+
     EnteroLargo n1;
     EnteroLargo n2;
-    
-    
+
+
     while (!fin){
-        EnteroLargo::suma(EnteroLargo("0994"), EnteroLargo("5925", false)).printEL();
         srand(time(NULL));
         int pot;
         cin >> pot;
@@ -74,7 +73,7 @@ int main(void){
             //cout << "Resultado con EL820 Karatsuba-Ofman: " << endl;
             res1 = EL820::multEL820(n3,n4,3);
             res1.printEL();
-            
+
         }
         else{
             cout << "La longitud de uno de los numeros no es una potencia de 2 mayor que 8." << endl;

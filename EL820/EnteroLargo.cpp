@@ -24,12 +24,12 @@ EnteroLargo::EnteroLargo(string num, bool signo){
 }
 
 EnteroLargo::EnteroLargo(list<char> num, bool signo){
-    numero.merge(num);
+    numero = num;
     this->signo = signo;
 }
 
 EnteroLargo::EnteroLargo(list<char> num){
-    numero.merge(num);
+    numero = num;
     this->signo = true;
 }
 
@@ -242,7 +242,7 @@ EnteroLargo EnteroLargo::multDyV (EnteroLargo n1, EnteroLargo n2){
         EnteroLargo x = EnteroLargo(dern1);
         EnteroLargo y = EnteroLargo(izqn2);
         EnteroLargo z = EnteroLargo(dern2);
-        
+
         EnteroLargo m1 = multDyV(w,y);
         EnteroLargo m2 = suma(multDyV(w,z),multDyV(x,y));
         EnteroLargo m3 = multDyV(x,z);
