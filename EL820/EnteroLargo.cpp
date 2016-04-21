@@ -40,6 +40,10 @@ EnteroLargo::EnteroLargo(const EnteroLargo* num){
 
 
 void EnteroLargo::printEL(){
+    
+    while(*numero.begin()=='0')
+        numero.pop_front();
+        
     list<char>::iterator it = numero.begin();
     if (!this->signo){
         cout << '-';
@@ -90,6 +94,31 @@ int EnteroLargo::compare(EnteroLargo a, EnteroLargo b){
     return 0;
 
 }
+
+int EnteroLargo::comparaValida(EnteroLargo a, EnteroLargo b){
+    int pos = 0;
+    list<char>::iterator it1 = a.numero.begin();
+    list<char>::iterator it2 = b.numero.begin();
+    
+    while(*a.numero.begin()=='0')
+        a.numero.pop_front();
+    while(*b.numero.begin()=='0')
+        b.numero.pop_front();
+    
+    it1 = a.numero.begin();
+    it2 = b.numero.begin();
+    while (it1 != a.numero.end()){
+        if ((int)(*it1)==(int)(*it2)){
+            pos++;
+        }
+        else
+            return pos;
+        it1++; 
+        it2++;
+    }
+    return -1;
+}
+
 
 EnteroLargo EnteroLargo::resta(EnteroLargo a, EnteroLargo b){
     return suma(a,EnteroLargo(b.numero, !b.signo));

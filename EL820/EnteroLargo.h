@@ -25,6 +25,7 @@ class EnteroLargo {
         EnteroLargo(const EnteroLargo* num);
         static void leftpad(EnteroLargo &a, EnteroLargo &b);
         static int compare(EnteroLargo a, EnteroLargo b);
+        static int comparaValida(EnteroLargo a, EnteroLargo b);
         static EnteroLargo resta(EnteroLargo a, EnteroLargo b);
         static EnteroLargo suma(EnteroLargo a, EnteroLargo b);
         void desp (int d);
