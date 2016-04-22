@@ -2,42 +2,27 @@
 #include "EnteroLargo.h"
 #include <iostream>
 
-EL820::EL820(EnteroLargo * eLargo, int cero1, int cero2, int n){
-    for (int i = 0; i < 8; i++) {
-        if (i==cero1 || i==cero2){
-            numero[i] = EnteroLargo("0");   
-        }
-        else{ 
-            numero[i] = eLargo[i];
-        }
-    }
-    this->cero1 = cero1;
-    this->cero2 = cero2;
-    this->n = n;
-}
-
 EL820::EL820(int cero1, int cero2, string numero){
-    int n = numero.size()/8;
     this->cero1 = cero1;
     this->cero2 = cero2;
-    this->n = n;
-    for (int i = 0; i < 8; i++) {
-        this->numero[i] = numero.substr(i*n, n);
+    this->n = numero.size()/8;;
+    int d = 0;
+    for (int i = 7; i >= 0; i--) {
+        this->numero[i] = numero.substr(d*n, n);
+        d++;
     }
 }
 
+//alg sirve para seleccionar el algoritmo de multiplicacion que se usara
+// 1 es directa, 2 es DyV y 3 es KO
 EnteroLargo EL820::multEL820 (EL820 a, EL820 b, int alg){
     EnteroLargo resultado = EnteroLargo("0");
-    int d = 0; //desplazamiento
-    for (int i = 7; i >= 0; i--) {
-        if (i == b.cero1 || i == b.cero2){
-            d++;
-        }
-        else {
+    for (int i = 0; i < 8; i++) {
+        //solo multiplica si no esta en un 0 de b
+        if (!(i == b.cero1 || i == b.cero2)){
             EnteroLargo mult = multPorCasos(a, b.numero[i], alg);
-            mult.desp(d*a.n);
+            mult.desp(i*a.n);
             resultado = EnteroLargo::suma(resultado,mult);
-            d++;
         }
     }
     return resultado;
@@ -45,12 +30,8 @@ EnteroLargo EL820::multEL820 (EL820 a, EL820 b, int alg){
 
 EnteroLargo EL820::multPorCasos(EL820 a, EnteroLargo b, int alg){
     EnteroLargo resultado = EnteroLargo("0");
-    int d = 0;
-    for (int i = 7; i >= 0; i--) {
-        if (i == a.cero1 || i == a.cero2){
-            d++;
-        }
-        else{
+    for (int i = 0; i < 8; i++) {
+        if (!(i == a.cero1 || i == a.cero2)){
             EnteroLargo mult = EnteroLargo("0");
             switch (alg){
                 case 1:
@@ -63,9 +44,8 @@ EnteroLargo EL820::multPorCasos(EL820 a, EnteroLargo b, int alg){
                     mult = EnteroLargo::karatsubaOfman(a.numero[i],b);
                     break;
             }
-            mult.desp(d*a.n);
+            mult.desp(i*a.n);
             resultado = EnteroLargo::suma(resultado, mult);
-            d++;
         }
     }
     return resultado;

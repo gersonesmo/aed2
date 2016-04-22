@@ -40,11 +40,10 @@ EnteroLargo::EnteroLargo(const EnteroLargo* num){
 
 
 void EnteroLargo::printEL(){
-    
-    while(*numero.begin()=='0')
+    while(*numero.begin()=='0') //elimina ceros a la izquierda del numero antes de imprimir
         numero.pop_front();
-        
-    list<char>::iterator it = numero.begin();
+    
+    list<char>::iterator it = numero.begin(); //añade el signo si fuera necesario
     if (!this->signo){
         cout << '-';
     }
@@ -54,8 +53,9 @@ void EnteroLargo::printEL(){
     }
     cout << endl;
 }
-
-void EnteroLargo::leftpad(EnteroLargo &a, EnteroLargo &b){
+/* esta funcion iguala la longitud de 2 EL añadiendo ceros a la izquierda del mas corto,
+es necesaria para el funcionamiento de algunas operaciones basadas en la longitud como compare*/
+void EnteroLargo::leftpad(EnteroLargo &a, EnteroLargo &b){ 
     if (a.getNum().size() < b.getNum().size()){
         int nCeros = b.getNum().size()-a.getNum().size();
         for (int i = 0; i < nCeros; i++) {
@@ -70,7 +70,8 @@ void EnteroLargo::leftpad(EnteroLargo &a, EnteroLargo &b){
     }
 }
 
-//1 si mayor, 2 si menor, 0 si igual
+//funcion que compara 2 EL, devuelve 1 si a es el mayor
+//, 2 si es el menor, 0 si son iguales
 int EnteroLargo::compare(EnteroLargo a, EnteroLargo b){
     if (a.numero.size() > b.numero.size()){
         return 1;
@@ -94,36 +95,37 @@ int EnteroLargo::compare(EnteroLargo a, EnteroLargo b){
     return 0;
 
 }
-
+//funcion parecida a compare, solo que esta solo devuelve la posición en la que 2 EL
+//se diferencian. Si no es el caso, devuelve -1
 int EnteroLargo::comparaValida(EnteroLargo a, EnteroLargo b){
     int pos = 0;
-    list<char>::iterator it1 = a.numero.begin();
-    list<char>::iterator it2 = b.numero.begin();
     
+    //se elimina ceros a la izquierda de ambos numeros para evitar que afecte a la comparación
     while(*a.numero.begin()=='0')
         a.numero.pop_front();
     while(*b.numero.begin()=='0')
         b.numero.pop_front();
     
-    it1 = a.numero.begin();
-    it2 = b.numero.begin();
+    list<char>::iterator it1 = a.numero.begin();
+    list<char>::iterator it2 = b.numero.begin();
     while (it1 != a.numero.end()){
         if ((int)(*it1)==(int)(*it2)){
             pos++;
         }
         else
             return pos;
-        it1++; 
-        it2++;
+        it1++; it2++;
     }
     return -1;
 }
 
-
+//simplemente se llama a suma con el signo de b cambiado
 EnteroLargo EnteroLargo::resta(EnteroLargo a, EnteroLargo b){
     return suma(a,EnteroLargo(b.numero, !b.signo));
 }
 
+//suma de 2 EL, analiza si son positivos, negativos o de signos distintos
+//y actua en consecuencia, restando si son signos distintos y sumando si son iguales
 EnteroLargo EnteroLargo::suma(EnteroLargo a, EnteroLargo b){
     list<char> resultado;
     int acarreo = 0;
@@ -138,7 +140,9 @@ EnteroLargo EnteroLargo::suma(EnteroLargo a, EnteroLargo b){
             it1++;
             it2++;
         }
-
+        //si un numero es mas largo que otro, no habra llegado al final, por lo que
+        //se comprueba si se ha terminado de recorrer ambos y si no, se termina
+        //y se añade al resultado con el acarreo que haya
         if (it1 == a.numero.rend()){
             while (it2 != b.numero.rend()){
                 sum = (*it2 - '0') + acarreo;
@@ -155,7 +159,7 @@ EnteroLargo EnteroLargo::suma(EnteroLargo a, EnteroLargo b){
                 it1++;
             }
         }
-
+        //si tras recorrer a y b queda un acarreo se añade al final
         if (acarreo != 0)
             resultado.push_front(acarreo + '0');
         return EnteroLargo(resultado, a.signo);
@@ -167,6 +171,8 @@ EnteroLargo EnteroLargo::suma(EnteroLargo a, EnteroLargo b){
         list<char>::reverse_iterator endGrande;
         list<char>::reverse_iterator endPeq;
         bool signoRes;
+        //se resta el mayor menos el menor, para lo cual llama a compare
+        //y pone el iterador grande en el mayor y el pequeño en el menor
         switch (compare(a,b)) {
             case 1: //a mayor
                 itGrande = a.numero.rbegin();
@@ -203,7 +209,7 @@ EnteroLargo EnteroLargo::suma(EnteroLargo a, EnteroLargo b){
     }
 }
 
-
+//multiplicacion de un entero(de un digito) por un EL
 EnteroLargo EnteroLargo::multUnoPorTodo(int n, EnteroLargo largo){
     int acarreo = 0;
     string resultado = "";
@@ -223,6 +229,7 @@ EnteroLargo EnteroLargo::multUnoPorTodo(int n, EnteroLargo largo){
     return resultado;
 }
 
+//desplazamiento de un EL
 void EnteroLargo::desp (int d){
     for (int i = 0; i < d; i++) {
         numero.push_back('0');
@@ -233,6 +240,8 @@ EnteroLargo EnteroLargo::multELDirecta(EnteroLargo n1, EnteroLargo n2){
     int i = 0; // desplazamiento
     EnteroLargo sum = EnteroLargo("0");
     list<char>::reverse_iterator itU = n1.getNum().rbegin();
+    //se va recorriendo n1 cifra a cifra y llamando a multUnoPorTodo, el resultado
+    //se suma al actual con el desplazamiento correspondiente
     while (itU!=n1.getNum().rend()){
             int u = (int)(*itU) - '0';
             EnteroLargo sum2 = multUnoPorTodo(u,n2);
@@ -241,30 +250,23 @@ EnteroLargo EnteroLargo::multELDirecta(EnteroLargo n1, EnteroLargo n2){
             itU++;
             i++;
         }
+    sum.signo= (n1.signo==n2.signo); //a signos distintos, resultado negativo, a signos iguales, positivo
     return sum;
 }
 
 EnteroLargo EnteroLargo::multDyV (EnteroLargo n1, EnteroLargo n2){
     if ((n1.getNum().size() == 1) && (n2.getNum().size() == 1)){
-        int u = (int)(*n1.getNum().rbegin())-'0';
-        return multUnoPorTodo(u, n2);
+        return multELDirecta(n1, n2);
     }
     else{
-        if (n1.getNum().size() < n2.getNum().size()){
-            int nCeros = n2.getNum().size()-n1.getNum().size();
-            for (int i = 0; i < nCeros; i++) {
-                n1.getNum().push_front('0');
-            }
-        }
-        else {
-            int nCeros = n1.getNum().size()-n2.getNum().size();
-            for (int i = 0; i < nCeros; i++) {
-                n2.getNum().push_front('0');
-            }
-        }
+        leftpad(n1, n2);
         int s = n1.numero.size()/2;
+        //Next devuelve un iterador en la posicion correspondiente a 
+        //avanzar tantas veces como diga el segundo argumento desde el primero.
+        //En este caso seria avanzar longitud/2 veces desde begin, es decir, quedaría en la mitad
         auto medion1 = next(n1.getNum().begin(), s);
         auto medion2 = next(n2.getNum().begin(), s);
+        //Ahora se usa el constructor de rango a partir del cual se crean los enteros largos
         list<char> izqn1(n1.getNum().begin(), medion1), dern1(medion1, n1.getNum().end());
         list<char> izqn2(n2.getNum().begin(), medion2), dern2(medion2, n2.getNum().end());
         EnteroLargo w = EnteroLargo(izqn1);
@@ -287,8 +289,7 @@ EnteroLargo EnteroLargo::karatsubaOfman (EnteroLargo n1, EnteroLargo n2){
     int s = n1.getNum().size()/2;
 
     if ((n1.numero.size() == 1) && (n2.numero.size() == 1)){
-        int res = (*n1.numero.begin()-'0') * (*n2.numero.begin()-'0');
-        return EnteroLargo(to_string(res), signoRes);
+        return multELDirecta(n1,n2);
     }
     else{
         leftpad(n1,n2);
